@@ -1,0 +1,217 @@
+<html>
+
+<head>
+	<title>Form Builder</title>
+
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
+
+	<style type="text/css">
+		body,
+		html {
+			height: 100%;
+		}
+
+		form,
+		.row {
+			min-height: 50px;
+		}
+
+		.modal-dialog {
+			margin-right: auto;
+			margin-left: auto;
+			margin-top: 65px;
+			max-width: 95%;
+		}
+	</style>
+
+	<script>
+// var a = [1,2,3,4,5,1,3]
+// var b = []
+
+// var c = a.find((item)=> item == 1)
+// console.log(c)
+// program to remove duplicate value from an array
+
+// function getUnique(arr){
+    
+//     let uniqueArr = [];
+    
+//     // loop through array
+//     for(let i of arr) {
+//         if(uniqueArr.indexOf(i) === -1) {
+//             uniqueArr.push(i);
+//         }
+//     }
+//     console.log(uniqueArr);
+// }
+var a = [1,1,2,3,4,5,6,7,6,5,"ravi","ravi"]
+var b = []
+
+for(let r of a){
+    if(b.indexOf(r) === -1){
+        b.push(r)
+    }
+}
+console.log(b)
+
+// const array = [1, 2, 3, 2, 3, "ravi","ravi"];
+// const colorArr = ["red", "yellow", "blue", "green", "white", "black"];
+
+// const [first, second] = colorArr;
+// console.log(first, second);
+
+// calling the function
+// passing array argument
+// getUnique(array);
+
+
+		function allowDrop(ev) {
+			ev.preventDefault();
+		}
+
+		function drag(ev) {
+			ev.dataTransfer.setData("text", ev.target.id);
+		}
+
+		function drop(ev) {
+			ev.preventDefault();
+			var data = ev.dataTransfer.getData("text");
+
+			var elements = {
+				'br': '<br />',
+				'h1': '<h1 id="#id#">Heading</h1>',
+				'p': '<p id="#id#">This is a Paragraph</p>',
+				'int': '<input id="#id#" type="test" class="form-control">',
+				'frm': '<form action="#action#" class="border p-2"></form>',
+				'img': '<img id="#id#" src="https://media.tacdn.com/media/attractions-splice-spp-360x240/07/84/50/bd.jpg" class="img-rounded" height=100 width=140>',
+				'btn': '<button id="#id#" type="button" class="btn btn-primary">Primary</button>',
+				'rb': '<div id="#id#" class="form-check form-check-inline"><input type="radio" class="form-check-input"><label class="form-check-label">Option</label></div>',
+				'chb': '<div id="#id#" class="form-check form-check-inline"><input class="form-check-input" type="checkbox" ><label class="form-check-label">Option</label></div>',
+				'g1': '<div class="row m-2"><div class="col p-3 border"></div></div>',
+				'g2': '<div class="row m-2"><div class="col-sm-6 p-3 border"></div><div class="col-sm-6 p-3 border"></div></div>',
+				'g3': '<div class="row m-2"><div class="col-sm-4 p-3 border"></div><div class="col-sm-4 p-3 border"></div><div class="col-sm-4 p-3 border"></div></div>',
+				'g4': '<div class="row m-2"><div class="col-sm-3 p-3 border"></div><div class="col-sm-3 p-3 border"></div><div class="col-sm-3 p-3 border"></div><div class="col-sm-3 p-3 border"></div></div>',
+			};
+
+			var htmlString = elements[data];
+			var nextId = getMax(window.designData, "Id");
+			htmlString = htmlString.replace("#id#", nextId);
+			var div = document.createElement('div');
+			div.innerHTML = htmlString.trim();
+			ev.target.appendChild(div);
+
+			AddDesignData(data, nextId);
+		}
+
+		function CreateDesignData() {
+			window.designData = [];
+		}
+
+		function getMax(arr, prop) {
+			var max = 0;
+			for (var i = 0; i < arr.length; i++) {
+				if (max < parseInt(arr[i][prop])) { max = arr[i][prop]; }
+			}
+			return max + 1;
+		}
+
+		function AddDesignData(type, nextId) {
+			var json = { "Id": nextId, "Type": type };
+			window.designData.push(json);
+		}
+
+		function ShowOutputJson() {
+			alert(JSON.stringify(window.designData));
+		}
+		function preview() {
+			var datainner = document.getElementById("container").innerHTML
+			datainner = datainner.replaceAll('border', '')
+			document.getElementById("modal-body").innerHTML = '<div class="container-fluid "><div class="row ">' + datainner + '</div></div>'
+		}
+
+	</script>
+
+</head>
+
+<body onload="CreateDesignData()">
+
+	<div class="container-fluid h-100">
+		<div class="row h-100">
+			<div class="col-2 p-2 bg-light">
+
+				<h3 class="m-1 mt-0 mb-2">Form Builder</h3>
+
+				<ul class="list-group">
+					<li class="list-group-item">
+						<div id="frm" draggable="true" ondragstart="drag(event)"><b>Form</b></div>
+					</li>
+					<li class="list-group-item">
+						<div id="p" draggable="true" ondragstart="drag(event)">Paragraph</div>
+					</li>
+					<li class="list-group-item">
+						<div id="h1" draggable="true" ondragstart="drag(event)">Heading</div>
+					</li>
+					<li class="list-group-item">
+						<div id="br" draggable="true" ondragstart="drag(event)">Break</div>
+					</li>
+					<li class="list-group-item">
+						<div id="int" draggable="true" ondragstart="drag(event)">Input Box</div>
+					</li>
+					<li class="list-group-item">
+						<div id="rb" draggable="true" ondragstart="drag(event)">Radio</div>
+					</li>
+					<li class="list-group-item">
+						<div id="chb" draggable="true" ondragstart="drag(event)">CheckBox</div>
+					</li>
+					<li class="list-group-item">
+						<div id="btn" draggable="true" ondragstart="drag(event)">Button</div>
+					</li>
+					<li class="list-group-item">
+						<div id="g1" draggable="true" ondragstart="drag(event)">Grid 12</div>
+					</li>
+					<li class="list-group-item">
+						<div id="g2" draggable="true" ondragstart="drag(event)">Grid 6,6</div>
+					</li>
+					<li class="list-group-item">
+						<div id="g3" draggable="true" ondragstart="drag(event)">Grid 4,4,4</div>
+					</li>
+					<li class="list-group-item">
+						<div id="g4" draggable="true" ondragstart="drag(event)">Grid 3,3,3,3</div>
+					</li>
+					<li class="list-group-item">
+						<div id="img" draggable="true" ondragstart="drag(event)">Image</div>
+					</li>
+				</ul>
+
+				<br />
+
+				<button type="button" class="btn mt-0 ml-2 btn-primary" onclick="ShowOutputJson();">Json</button>
+				<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal"
+					onclick="preview();">Preview</button>
+
+			</div>
+
+			<div id="container" class="col-10 p-3 border" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+
+		</div>
+		<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">Form Builder</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body" id="modal-body">
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</body>
+
+</html>
